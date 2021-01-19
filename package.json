@@ -1,18 +1,15 @@
 {
-  "name": "FlatlistSlider",
+  "name": "react-native-flatlist-slider",
+  "main": "./index.js",
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "start": "react-native start",
     "test": "jest",
     "lint": "eslint ."
   },
   "dependencies": {
     "react": "16.11.0",
-    "react-native": "0.62.2",
-    "react-native-flatlist-slider": "^0.1.9"
+    "react-native": "0.62.2"
   },
   "devDependencies": {
     "@babel/core": "7.9.6",
