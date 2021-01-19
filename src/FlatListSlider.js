@@ -80,18 +80,19 @@ export default class FlatListSlider extends Component {
           contentContainerStyle={this.props.contentContainerStyle}
           data={this.state.data}
           showsHorizontalScrollIndicator={false}
-          renderItem={({item, index}) =>
-            React.cloneElement(this.props.component, {
-              style: {width: this.props.width},
-              item: item,
-              imageKey: this.props.imageKey,
-              onPress: this.props.onPress,
-              index: this.state.index % this.props.data.length,
-              active: index === this.state.index,
-              local: this.props.local,
-              height: this.props.height,
-            })
-          }
+//           renderItem={({item, index}) =>
+//             React.cloneElement(this.props.component, {
+//               style: {width: this.props.width},
+//               item: item,
+//               imageKey: this.props.imageKey,
+//               onPress: this.props.onPress,
+//               index: this.state.index % this.props.data.length,
+//               active: index === this.state.index,
+//               local: this.props.local,
+//               height: this.props.height,
+//             })
+//           }
+          renderItem={this.props.renderCustomItem}
           ItemSeparatorComponent={() => (
             <View style={{width: this.props.separatorWidth}} />
           )}
