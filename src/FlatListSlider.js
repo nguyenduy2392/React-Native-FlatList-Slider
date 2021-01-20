@@ -1,4 +1,4 @@
-import React, {Component, createRef} from 'react';
+import React, { Component, createRef } from 'react';
 import {
   FlatList,
   View,
@@ -33,7 +33,7 @@ export default class FlatListSlider extends Component {
     timer: 3000,
     onPress: {},
     contentContainerStyle: {},
-    component: <ChildItem/>,
+    component: <ChildItem />,
   };
 
   constructor(props) {
@@ -56,7 +56,7 @@ export default class FlatListSlider extends Component {
   componentDidUpdate(prevprops) {
     if (prevprops.data !== this.props.data) this.setState({ data: this.props.data });
   }
-  
+
   componentWillUnmount() {
     if (this.props.autoscroll) {
       this.stopAutoPlay();
@@ -80,21 +80,21 @@ export default class FlatListSlider extends Component {
           contentContainerStyle={this.props.contentContainerStyle}
           data={this.state.data}
           showsHorizontalScrollIndicator={false}
-//           renderItem={({item, index}) =>
-//             React.cloneElement(this.props.component, {
-//               style: {width: this.props.width},
-//               item: item,
-//               imageKey: this.props.imageKey,
-//               onPress: this.props.onPress,
-//               index: this.state.index % this.props.data.length,
-//               active: index === this.state.index,
-//               local: this.props.local,
-//               height: this.props.height,
-//             })
-//           }
+          //           renderItem={({item, index}) =>
+          //             React.cloneElement(this.props.component, {
+          //               style: {width: this.props.width},
+          //               item: item,
+          //               imageKey: this.props.imageKey,
+          //               onPress: this.props.onPress,
+          //               index: this.state.index % this.props.data.length,
+          //               active: index === this.state.index,
+          //               local: this.props.local,
+          //               height: this.props.height,
+          //             })
+          //           }
           renderItem={this.props.renderCustomItem}
           ItemSeparatorComponent={() => (
-            <View style={{width: this.props.separatorWidth}} />
+            <View style={{ width: this.props.separatorWidth }} />
           )}
           keyExtractor={(item, index) => item.toString() + index}
           onViewableItemsChanged={this.onViewableItemsChanged}
@@ -104,7 +104,7 @@ export default class FlatListSlider extends Component {
             offset: totalItemWidth * index,
             index,
           })}
-          windowSize={1}
+          windowSize={this.props.data.length}
           initialNumToRender={1}
           maxToRenderPerBatch={1}
           removeClippedSubviews={true}
@@ -121,14 +121,14 @@ export default class FlatListSlider extends Component {
             indicatorActiveColor={this.props.indicatorActiveColor}
             indicatorInActiveColor={this.props.indicatorInActiveColor}
             indicatorActiveWidth={this.props.indicatorActiveWidth}
-            style={{...styles.indicator, ...this.props.indicatorStyle}}
+            style={{ ...styles.indicator, ...this.props.indicatorStyle }}
           />
         )}
       </View>
     );
   };
 
-  onViewableItemsChanged = ({viewableItems, changed}) => {
+  onViewableItemsChanged = ({ viewableItems, changed }) => {
     if (viewableItems.length > 0) {
       let currentIndex = viewableItems[0].index;
       if (
@@ -137,15 +137,19 @@ export default class FlatListSlider extends Component {
       ) {
         this.setState({
           index: currentIndex,
-          data: [...this.state.data, ...this.props.data],
+          // data: [...this.state.data, ...this.props.data],
         });
       } else {
-        this.setState({index: currentIndex});
+        this.setState({ index: currentIndex });
       }
 
       if (this.props.currentIndexCallback) {
         this.props.currentIndexCallback(currentIndex);
       }
+      // if (this.props.autoscroll) {
+      //   this.stopAutoPlay()
+        this.startAutoPlay()
+      // }
     }
   };
 
@@ -154,17 +158,18 @@ export default class FlatListSlider extends Component {
   };
 
   changeSliderListIndex = () => {
-    if (this.props.animation) {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeIn);
-    }
-    this.setState({index: this.state.index + 1});
+    // if (this.props.animation) {
+    //   LayoutAnimation.configureNext(LayoutAnimation.Presets.easeIn);
+    // }
+    // this.setState({index: this.state.index + 1});
     this.slider.current.scrollToIndex({
-      index: this.state.index,
+      index: this.state.index + 1 < this.props.data.length ? this.state.index + 1 : 0,
       animated: true,
     });
   };
 
   startAutoPlay = () => {
+    this.stopAutoPlay()
     this.sliderTimer = setInterval(
       this.changeSliderListIndex,
       this.props.timer,
@@ -191,7 +196,7 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         shadowColor: 'black',
-        shadowOffset: {width: 3, height: 3},
+        shadowOffset: { width: 3, height: 3 },
         shadowOpacity: 0.4,
         shadowRadius: 10,
       },
