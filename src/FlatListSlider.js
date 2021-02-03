@@ -108,6 +108,7 @@ export default class FlatListSlider extends Component {
           initialNumToRender={1}
           maxToRenderPerBatch={1}
           removeClippedSubviews={true}
+          scrollEnabled={!this.props.disableScroll}
         />
         {this.props.indicator && (
           <Indicator
@@ -129,7 +130,7 @@ export default class FlatListSlider extends Component {
   };
 
   onViewableItemsChanged = ({ viewableItems, changed }) => {
-    if (viewableItems.length > 0) {
+    if (viewableItems.length > 0 && !this.props.disableScroll) {
       let currentIndex = viewableItems[0].index;
       if (
         currentIndex % this.props.data.length === this.props.data.length - 1 &&
@@ -162,13 +163,17 @@ export default class FlatListSlider extends Component {
     //   LayoutAnimation.configureNext(LayoutAnimation.Presets.easeIn);
     // }
     // this.setState({index: this.state.index + 1});
-    this.slider.current.scrollToIndex({
-      index: this.state.index + 1 < this.props.data.length ? this.state.index + 1 : 0,
-      animated: true,
-    });
+    // if (!this.props.disableScroll) {
+      console.log(this.props.title, 'changeSliderListIndex')
+      this.slider.current.scrollToIndex({
+        index: this.state.index + 1 < this.props.data.length ? this.state.index + 1 : 0,
+        animated: true,
+      });
+    // }
   };
 
   startAutoPlay = () => {
+    console.log(this.props.title, 'startAutoPlay')
     this.stopAutoPlay()
     this.sliderTimer = setInterval(
       this.changeSliderListIndex,
@@ -177,6 +182,7 @@ export default class FlatListSlider extends Component {
   };
 
   stopAutoPlay = () => {
+    console.log(this.props.title, 'stopAutoPlay')
     if (this.sliderTimer) {
       clearInterval(this.sliderTimer);
       this.sliderTimer = null;
