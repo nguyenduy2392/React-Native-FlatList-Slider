@@ -164,7 +164,6 @@ export default class FlatListSlider extends Component {
     // }
     // this.setState({index: this.state.index + 1});
     // if (!this.props.disableScroll) {
-      console.log(this.props.title, 'changeSliderListIndex')
       this.slider.current.scrollToIndex({
         index: this.state.index + 1 < this.props.data.length ? this.state.index + 1 : 0,
         animated: true,
@@ -173,7 +172,6 @@ export default class FlatListSlider extends Component {
   };
 
   startAutoPlay = () => {
-    console.log(this.props.title, 'startAutoPlay')
     this.stopAutoPlay()
     this.sliderTimer = setInterval(
       this.changeSliderListIndex,
@@ -182,7 +180,6 @@ export default class FlatListSlider extends Component {
   };
 
   stopAutoPlay = () => {
-    console.log(this.props.title, 'stopAutoPlay')
     if (this.sliderTimer) {
       clearInterval(this.sliderTimer);
       this.sliderTimer = null;
